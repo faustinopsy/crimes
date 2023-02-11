@@ -191,9 +191,7 @@ barChart.setOption({
     type: 'value'
   },
   series: [{
-    data: barData.map(function(item) {
-      return  parseInt(item.value);
-    }),
+    data: 0,
     type: 'bar',
     barWidth: '30%',
     itemStyle: {
@@ -207,9 +205,7 @@ barChart.setOption({
       }
     }
   }, {
-    data: barData.map(function(item) {
-      return  parseInt(item.furto);
-    }),
+    data: 0,
     type: 'bar',
     barWidth: '30%',
     itemStyle: {
@@ -225,8 +221,38 @@ barChart.setOption({
   }]
 });
 
-myChart1.on('click', function (params) {
+myChart1.on('mouseover', function (params) {
 var bairroSelecionado = params.name;//santo amaro
+
+
+//0: {name: 'Pq São Rafael', value: '163', furto: '905'}
+var objetoSelecionado;
+for (var i = 0; i < data.regiao.length; i++) {
+   if (data.regiao[i].name === bairroSelecionado) {
+      objetoSelecionado = data.regiao[i];
+      break;
+   }
+}
+
+barChart.setOption({
+xAxis: {
+data: [bairroSelecionado]//santo amaro
+},
+series: [{
+   
+data: [{value: objetoSelecionado.value, name: "Roubo de veículos"}]
+
+},
+{
+   
+   data: [{value: objetoSelecionado.furto, name: "Furto de veículos"}]
+   
+   }
+]
+});
+});
+myChart1.on('touchstart', function (params) {
+  var bairroSelecionado = params.name;//santo amaro
 
 
 //0: {name: 'Pq São Rafael', value: '163', furto: '905'}
