@@ -1,0 +1,29 @@
+#conteudoEsq {
+    width: 33%;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+  }
+  
+  #sepEsqcolCentral {
+    width: 33%;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+  }
+  
+  #cpc, #bar-cpc, #linha-cpc {
+    max-width: 100%;
+    height: 400px;
+  }
+  
+  @media (max-width: 800px) {
+    #conteudoEsq, #sepEsqcolCentral {
+      width: 100%;
+      display: block;
+      text-align: center;
+    }
+  }
+  #slide{
+    top:5%;
+  }
