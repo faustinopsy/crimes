@@ -10,6 +10,7 @@ function carregarestado(){
    }
 
 let dados=[];
+let messelecionado;
 var myChart1 = echarts.init(document.getElementById('cpc'));
 myChart1.showLoading();
 
@@ -35,7 +36,7 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
       // console.log(this.value)
        var selectedMonth = s;
        var selectedData = dados[selectedMonth];
-
+       messelecionado=selectedData
    
          myChart1.setOption(option1 = {
            title: {
@@ -140,30 +141,7 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
     
    }
    
-       var barChart = echarts.init(document.getElementById('bar-cpc'));
-
-         barChart.setOption({
-           title: {
-           text: ''
-           },
-           legend: {
-           data: tiposDeCrimes
-           },
-           xAxis: {
-           type: 'category',
-           data: barData.map(function(item) {
-           return item.tipo;
-           })
-           },
-           tooltip: {
-               trigger: 'item',
-               formatter: '{b}: {c}'
-           },
-           yAxis: {
-           type: 'value'
-           },
-           series: series
-         });
+      
    
        myChart1.on('click', function (params) {
          var bairroSelecionado = params.name;
@@ -210,7 +188,30 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
 
 
          });
+         var barChart = echarts.init(document.getElementById('bar-cpc'));
 
+         barChart.setOption({
+           title: {
+           text: ''
+           },
+           legend: {
+           data: tiposDeCrimes
+           },
+           xAxis: {
+           type: 'category',
+           data: barData.map(function(item) {
+           return item.tipo ;
+           })
+           },
+           tooltip: {
+               trigger: 'item',
+               formatter: '{b}: {c}'
+           },
+           yAxis: {
+           type: 'value'
+           },
+           series: series
+         });
          var lineChart = echarts.init(document.getElementById('linha-cpc'));
          var lineData = [];
 

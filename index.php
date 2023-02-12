@@ -8,6 +8,16 @@
 
     </style>
 </head>
+<div id="splashScreen">
+  <div id="loading">
+    <p>Carregando...</p>
+    <div id="loadingBar">
+      <div id="loadingPercentage"></div>
+    </div>
+  </div>
+</div>
+<div id="conteudo">
+  
 <?php
 require_once 'previsao/vendor/autoload.php';
 use Phpml\Classification\KNearestNeighbors;
@@ -71,26 +81,42 @@ echo "Bairro com mais Furto de Veículo: {$bairroComMaisFurto} ({$furtoVeiculo[$
  
 <body onload="carregarestado()">
   
-
-
-    <div id="conteudoEsq"> 
-      <div id="cpc" style="max-width: 600px;height:400px;"></div>
+<div id="conteudoEsq"> 
+      <div id="cpc" style="max-width: 600px;"></div>
     </div>
-     
+<div id="sepEsqcolCentral">
+     <div id="bar-cpc" style="max-width: 600px; visibility: hidden;"></div>
+</div>
+    
      <div id="sepEsqcolCentral">
-     <div id="bar-cpc" style="max-width: 600px;height:400px; visibility: hidden;"></div>
-     </div> 
-     <div id="sepEsqcolCentral">
-     <div id="linha-cpc" style="max-width: 600px;height:400px; visibility: hidden;"></div>
+     <div id="linha-cpc" style="max-width: 600px; visibility: hidden;"></div>
      </div>  
-   </div>  
-  </div>
-  
-  </div>
+   
+     
   <script src="js/nouislider.min.js"></script>
   <script src="js/graficos.js"></script>
 <br><br><br>
+<script>
+window.addEventListener("load", function () {
+  const loadingPercentage = document.getElementById("loadingPercentage");
+  const splashScreen = document.getElementById("splashScreen");
+  const conteudo = document.getElementById("conteudo");
+  
+  let percentage = 0;
+  const interval = setInterval(() => {
+    percentage += 5;
+    loadingPercentage.style.width = `${percentage}%`;
+    
+    if (percentage >= 100) {
+      clearInterval(interval);
+      splashScreen.style.display = "none";
+      conteudo.style.display = "block";
+    }
+  }, 50);
+});
 
+  </script>
+  </div>
 </html>
    
 
