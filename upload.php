@@ -1,11 +1,8 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
 require __DIR__.'/vendor/autoload.php';
-
-define('TITLE','Cadastrar Jogo');
-
+define('TITLE','Cadastrar');
 use \App\Entity\mapasp;
-
 
 $mapasp = new MapaSP;
 $tipocrime=[];
@@ -41,10 +38,7 @@ if (isset($_POST["cabecalho"]) && isset($_POST["nomeArquivo"])) {
     $dados = json_decode($_POST["dados"], true);
     $nomeArquivo = $_POST["nomeArquivo"];
     $dados = json_decode($_POST["dados"], true);
-    // var_dump( $cabecalho[0] );
-    // var_dump($nomeArquivo);
-    //$crime=$tipocrime[0][15];
-    //var_dump($dados);exit;
+
     if ($dados === NULL) {
         $error = json_last_error();
         switch ($error) {
@@ -97,7 +91,6 @@ if (isset($_POST["cabecalho"]) && isset($_POST["nomeArquivo"])) {
         $mapasp = new MapaSP();
         $mapasp->ano = intval(filter_var($cabecalho[0], FILTER_SANITIZE_NUMBER_INT));
         $mapasp->bairro = trim($nomeArquivo);
-        //$mapasp->tipo_crime = trim(strtolower(trim($dados[$i])));
         $mapasp->tipo_crime = $tipocrime[0][$i];
         $mapasp->mes1 = intval(filter_var($dados[$i + 1], FILTER_SANITIZE_NUMBER_INT));
         $mapasp->mes2 = intval(filter_var($dados[$i + 2], FILTER_SANITIZE_NUMBER_INT));

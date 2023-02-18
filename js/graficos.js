@@ -8,7 +8,6 @@ function carregarestado(){
  xhttp.open("GET", "estatistica/estado.php", true);
  xhttp.send();
    }
-
 let dados=[];
 let messelecionado;
 var myChart1 = echarts.init(document.getElementById('cpc'));
@@ -33,11 +32,9 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
 });
 
    function atualiza(s) {
-      // console.log(this.value)
        var selectedMonth = s;
        var selectedData = dados[selectedMonth];
        messelecionado=selectedData
-   
          myChart1.setOption(option1 = {
            title: {
              text: 'Bairro',
@@ -112,14 +109,12 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
            tipo: selectedData[i].tipo
            });
          }
-
          var tiposDeCrimes = [];
            for (var i = 0; i < barData.length; i++) {
            if (tiposDeCrimes.indexOf(barData[i].tipo) === -1) {
            tiposDeCrimes.push(barData[i].tipo);
            }
          }
-
          var series = [];
          for (var i = 0; i < tiposDeCrimes.length; i++) {
            var data = [];
@@ -132,7 +127,6 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
                });
              }
            }
-       
          series.push({
            name: tiposDeCrimes[i],
            type: 'bar',
@@ -140,9 +134,6 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
          });
     
    }
-   
-      
-   
        myChart1.on('click', function (params) {
          var bairroSelecionado = params.name;
          document.getElementById('bar-cpc').style.visibility = 'visible';
@@ -152,7 +143,6 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
              objetosSelecionados.push(selectedData[i]);
            }
          }
-       
          var updatedSeries = [];
          for (var i = 0; i < barChart.getOption().series.length; i++) {
            var serie = barChart.getOption().series[i];
@@ -164,7 +154,6 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
            }
            updatedSeries.push(serie);
          }
-
          barChart.setOption({
            xAxis: {
              data: [bairroSelecionado]
@@ -173,8 +162,7 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
          });
          
          });
-       
-
+      
          myChart1.on('touchstart', function (params) {
            var bairroSelecionado = params.name;//santo amaro
            document.getElementById('bar-cpc').style.visibility = 'visible';
@@ -185,8 +173,6 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
                  break;
              }
            }
-
-
          });
          var barChart = echarts.init(document.getElementById('bar-cpc'));
 
@@ -235,7 +221,8 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
                var mesAtual = mes[j];
                data.push({
                  name: mesAtual,
-                 value: dados[mesAtual].find(function(dado) { return dado.name === bairroSelecionado && dado.tipo === tiposDeCrimes[i]; }).value
+                 value: dados[mesAtual].find(function(dado) {
+                   return dado.name === bairroSelecionado && dado.tipo === tiposDeCrimes[i]; }).value
                });
              }
              lineData.push({
@@ -265,16 +252,7 @@ $.get('estatistica/maps/sp.json', function (geoJson) {
            lineChart.setOption(lineOption);
          });
 
-
 }
-   
-   
-
-
-   
-       
-       
-   
 var slider = document.getElementById("slider");
 noUiSlider.create(slider, {
  start: 0,

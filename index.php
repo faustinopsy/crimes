@@ -19,19 +19,11 @@
 <div id="conteudo">
   
 <?php
-require_once 'previsao/vendor/autoload.php';
-use Phpml\Classification\KNearestNeighbors;
-
-$classifier = new KNearestNeighbors();
-
-$samples = [];
-$labels = [];
 
 $json = file_get_contents('estatistica/capital.json');
 $dados = json_decode($json, true);
 
 $filtered = [];
-
 foreach ($dados as $mes => $bairros) {
   foreach ($bairros as $bairro) {
     if ($bairro['tipo'] === 'Roubo de veiculo' || $bairro['tipo'] === 'Furto de veiculo') {
@@ -39,41 +31,29 @@ foreach ($dados as $mes => $bairros) {
     }
   }
 }
-
 $dados = $filtered;
-
-  foreach ($dados as $mes => $bairros) {
-    foreach ($bairros as  $bairro) {
-       
-      $samples[] = [$bairro["value"]];
-      $labels[] = $bairro["tipo"];
+$bairros = [];
+foreach ($dados as $mes => $bairrosMes) {
+  foreach ($bairrosMes as $bairro) {
+    if (!isset($bairros[$bairro["name"]])) {
+      $bairros[$bairro["name"]] = ["rouboVeiculo" => 0,"furtoVeiculo" => 0 ];
     }
-  
-}
-$classifier = new KNearestNeighbors();
-$classifier->train($samples, $labels);
-
-$rouboVeiculo = [];
-$furtoVeiculo = [];
-
-foreach ($dados as $mes) {
-    foreach ($mes as $bairros) {
-        
-            $prediction = $classifier->predict([$bairros["value"]]);
-            if ($prediction === 'Roubo de veiculo') {
-                $rouboVeiculo[$bairros["name"]] = isset($rouboVeiculo[$bairros["name"]]) ? $rouboVeiculo[$bairros["name"]] + $bairros["value"] : $bairros["value"];
-            } elseif ($prediction === 'Furto de veiculo') {
-                $furtoVeiculo[$bairros["name"]] = isset($furtoVeiculo[$bairros["name"]]) ? $furtoVeiculo[$bairros["name"]] + $bairros["value"] : $bairros["value"];
-            }
-        
+    if ($bairro["tipo"] === "Roubo de veiculo") {
+      $bairros[$bairro["name"]]["rouboVeiculo"] += intval(filter_var($bairro["value"], FILTER_SANITIZE_NUMBER_INT));
+    } elseif ($bairro["tipo"] === "Furto de veiculo") {
+      $bairros[$bairro["name"]]["furtoVeiculo"] += intval(filter_var($bairro["value"], FILTER_SANITIZE_NUMBER_INT));
     }
+  }
 }
+$rouboVeiculoMax = max(array_column($bairros, "rouboVeiculo"));
+$furtoVeiculoMax = max(array_column($bairros, "furtoVeiculo"));
+$bairroComMaisRouboVeiculo = array_search($rouboVeiculoMax, array_column($bairros, "rouboVeiculo"));
+$bairroComMaisFurtoVeiculo = array_search($furtoVeiculoMax, array_column($bairros, "furtoVeiculo"));
+$nomeBairroComMaisRouboVeiculo = array_keys($bairros)[$bairroComMaisRouboVeiculo];
+$nomeBairroComMaisFurtoVeiculo = array_keys($bairros)[$bairroComMaisFurtoVeiculo];
+echo "Bairro com mais Roubo de Veículo: {$nomeBairroComMaisRouboVeiculo} ({$rouboVeiculoMax})\n";
+echo "Bairro com mais Furto de Veículo: {$nomeBairroComMaisFurtoVeiculo} ({$furtoVeiculoMax})\n";
 
-$bairroComMaisRoubo = array_keys($rouboVeiculo, max($rouboVeiculo))[0];
-$bairroComMaisFurto = array_keys($furtoVeiculo, max($furtoVeiculo))[0];
-
-echo "Bairro com mais Roubo de Veículo: {$bairroComMaisRoubo} ({$rouboVeiculo[$bairroComMaisRoubo]})<br>";
-echo "Bairro com mais Furto de Veículo: {$bairroComMaisFurto} ({$furtoVeiculo[$bairroComMaisFurto]})\n";
 
 ?>
 <div id="slider"></div>
