@@ -76,7 +76,7 @@ echo "Bairro com mais Furto de Veículo: {$nomeBairroComMaisFurtoVeiculo} ({$fur
     </div>
      
   <script src="js/nouislider.min.js"></script>
-  <script src="js/graficos.js"></script>
+  <script src="js/graficomapa.js"></script>
   <script src="estatistica/maps/mapaloc.js"></script>
   <script src="js/pontosdecrime.js"></script>
 <br><br><br>
