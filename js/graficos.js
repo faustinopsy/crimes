@@ -1,4 +1,5 @@
 function carregarestado(){
+  atualiza('jan')
     var xhttp = new XMLHttpRequest();
  xhttp.onreadystatechange = function() {
    // if (this.readyState == 4 && this.status == 200) {
@@ -8,12 +9,17 @@ function carregarestado(){
  xhttp.open("GET", "estatistica/estado.php", true);
  xhttp.send();
    }
+ 
+
+
+
+
 let dados=[];
 let messelecionado;
 var myChart1 = echarts.init(document.getElementById('cpc'));
 myChart1.showLoading();
 
-$.get('estatistica/maps/sp.json', function (geoJson) {
+$.get('estatistica/maps/mapsp.json', function (geoJson) {
 
  myChart1.hideLoading();
  echarts.registerMap('state', geoJson);
@@ -276,6 +282,4 @@ slider.noUiSlider.on("update", function(values, handle) {
  var selectedMonth = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Math.round(values[handle])];
  atualiza(selectedMonth);
 });
-
-
 

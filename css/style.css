@@ -1,12 +1,39 @@
-#conteudoEsq {
-    width: 33%;
+
+  #conteudoEsq {
+    width: 25%;
+    height: 400px;
+    background-color: white;
+    box-shadow: 0px 0px 10px #ddd;
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: left;
     display: inline-block;
     vertical-align: top;
     text-align: center;
   }
-  
   #sepEsqcolCentral {
-    width: 33%;
+    width: 30%;
+    height: 400px;
+    background-color: white;
+    box-shadow: 0px 0px 10px #ddd;
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: left;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+  }
+  #conteudomapa {
+    width: 50%;
+    height: 500px;
+    background-color: white;
+    box-shadow: 0px 0px 10px #ddd;
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: left;
     display: inline-block;
     vertical-align: top;
     text-align: center;
@@ -59,13 +86,4 @@
     height: 100%;
     background-color: #0275d8;
   }
-  #conteudoEsq {
-    width: 400px;
-    height: 500px;
-    background-color: white;
-    box-shadow: 0px 0px 10px #ddd;
-    border-radius: 10px;
-    margin: 20px auto;
-    padding: 20px;
-    text-align: center;
-  }
+ 

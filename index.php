@@ -2,7 +2,6 @@
     <script src="js/chartli.js"></script>
     <link rel="stylesheet" href="css/nouislider.min.css"/>
     <link rel="stylesheet" href="css/style.css"/>
-  
 </head>
     <style>
 
@@ -59,7 +58,7 @@ echo "Bairro com mais Furto de Veículo: {$nomeBairroComMaisFurtoVeiculo} ({$fur
 <div id="slider"></div>
 <br><br><br>
  
-<body onload="carregarestado()">
+<body onload='carregarestado()'>
   
 <div id="conteudoEsq"> 
       <div id="cpc" style="max-width: 600px;"></div>
@@ -71,10 +70,15 @@ echo "Bairro com mais Furto de Veículo: {$nomeBairroComMaisFurtoVeiculo} ({$fur
      <div id="sepEsqcolCentral">
      <div id="linha-cpc" style="max-width: 600px; visibility: hidden;"></div>
      </div>  
-   
+     <div  id="conteudomapa">
+
+        <div id="pontosdecrime" style="height:500px;"></div>
+    </div>
      
   <script src="js/nouislider.min.js"></script>
   <script src="js/graficos.js"></script>
+  <script src="estatistica/maps/mapaloc.js"></script>
+  <script src="js/pontosdecrime.js"></script>
 <br><br><br>
 <script>
 window.addEventListener("load", function () {
