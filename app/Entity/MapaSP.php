@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Entity;
-
 use \App\Db\Database;
 use \PDO;
 
@@ -24,7 +22,6 @@ class MapaSP{
   public  $mes11;
   public  $mes12;
   public  $total;
-
 
   public function cadastrar(){
    
@@ -52,7 +49,6 @@ class MapaSP{
     return true;
   }
   public static function getMapaApi($ano){
-    
     return (new Database('mapacrimesp'))->select('ano ='. $ano, $order=null , $limit=null , $fields ='*')
                                    ->fetchAll(PDO::FETCH_CLASS,self::class);
    }
