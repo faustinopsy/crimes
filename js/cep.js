@@ -1,0 +1,114 @@
+let latjs;
+let lngjs;
+
+const input = document.getElementById('endereco');
+
+input.addEventListener('blur', () => {
+ const cidade = document.getElementById("cidade")
+  const street = input.value;
+  const city = cidade.value;
+  let endereco=street+','+city;
+  updateMap(endereco);
+});
+async function meu_callback(conteudo) {
+    if (!("erro" in conteudo)) {
+      let address = conteudo.logradouro + ',' + conteudo.localidade;
+      try {
+        let response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${address}&format=json&limit=1`);
+        latjs = response.data[0].lat;
+        lngjs = response.data[0].lon;
+        createMap(latjs, lngjs);
+        //Atualiza os campos com os valores.
+        document.getElementById('utmy').value = latjs;
+        document.getElementById('utmx').value = lngjs;
+        document.getElementById('endereco').value = conteudo.logradouro;
+        document.getElementById('bairro').value = conteudo.bairro;
+        document.getElementById('cidade').value = conteudo.localidade;
+        document.getElementById('uf').value = conteudo.uf;
+      } catch (error) {
+        const messageText = document.getElementById("message-text");
+        messageText.innerText = 'Erro ao obter latitude e longitude';
+        showMessage();
+      }
+    } else {
+      //CEP não Encontrado.
+      limpa_formulário_cep();
+      const messageText = document.getElementById("message-text");
+      messageText.innerText = 'CEP não encontrado';
+      showMessage();
+    }
+  }
+  
+  function createMap(lat, lng) {
+    mymap = L.map('mapid').setView([lat, lng], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+      maxZoom: 18
+    }).addTo(mymap);
+    L.marker([lat, lng]).addTo(mymap);
+  }
+  
+  // Função para atualizar o mapa
+  function updateMap(address) {
+    axios.get(`https://nominatim.openstreetmap.org/search?q=${address}&format=json&limit=1`)
+      .then(response => {
+        latjs = response.data[0].lat;
+        lngjs = response.data[0].lon;
+        document.getElementById('utmy').value = latjs;
+        document.getElementById('utmx').value = lngjs;
+        if (mymap) {
+          mymap.remove();
+        }
+        createMap(latjs, lngjs);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+function limpa_formulário_cep() {
+    //Limpa valores do formulário de cep.
+    document.getElementById('endereco').value=("");
+    document.getElementById('bairro').value=("");
+    document.getElementById('cidade').value=("");
+    document.getElementById('uf').value=("");
+   //document.getElementById('ibge').value=("");
+}
+
+
+
+function pesquisacep(valor) {
+//Nova variável "cep" somente com dígitos.
+var cep = valor.replace(/\D/g, '');
+//Verifica se campo cep possui valor informado.
+if (cep != "") {
+    //Expressão regular para validar o CEP.
+    var validacep = /^[0-9]{8}$/;
+    //Valida o formato do CEP.
+    if(validacep.test(cep)) {
+        //Preenche os campos com "..." enquanto consulta webservice.
+        document.getElementById('endereco').value="...";
+        document.getElementById('bairro').value="...";
+        document.getElementById('cidade').value="...";
+        document.getElementById('uf').value="...";
+        //document.getElementById('ibge').value="...";
+        //Cria um elemento javascript.
+        var script = document.createElement('script');
+        //Sincroniza com o callback.
+        script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
+        //Insere script no documento e carrega o conteúdo.
+        document.body.appendChild(script);
+    } //end if.
+    else {
+        //cep é inválido.
+        limpa_formulário_cep();
+        const messageText = document.getElementById("message-text");
+                messageText.innerText = 'CEP invalido';
+                showMessage();
+    }
+} //end if.
+else {
+    //cep sem valor, limpa formulário.
+    limpa_formulário_cep();
+}
+};

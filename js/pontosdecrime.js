@@ -10,39 +10,29 @@ function carrega(){
           alert("An error occurred.");
         },
         success: function (data) {
-         
+            var max = Math.max.apply(null, data.map(function(item) { return item.value; }));
 
-          var color = ['#EAC435', '#03CEA4', '#FB4D3D'];
           var pontosdecrime = echarts.init(document.getElementById('pontosdecrime'));
-    
-    
-          var max = -Infinity;
-          var min = Infinity;
-          
+
           option = {  
               legend: {
-                      orient: 'vertical',
-                      top: 'top',
-                      left: 'left',
-                      data:['Furto de veículo','Roubo de veículo'],
-                      textStyle: {
-                          color: 'blue'
-                      },
-                      selectedMode: 'single'
-                  },
+                orient: 'vertical',
+                left: 'left',
+                data: ['Furto de veículo', 'Roubo de veículo']
+            },
               title: {
                   text: 'Pontos de crime',
-                  subtext: '',
+                  subtext: 'DADOS FICTICIOS',
                   left: 'center',
                   top: 'top',
                   textStyle: {
-                      color: '#fff'
+                      color: '#0000'
                   }
               },
               tooltip: {
                   trigger: 'item',
                   formatter: function (params) {
-                      return params.seriesName + ':<br />' + params.name + '  ' ;
+                      return params.data.bairro + '<br>' + params.name + '  ' ;
                   }
               },
               toolbox: {
@@ -64,7 +54,7 @@ function carrega(){
              },
              visualMap: {
               min: 10,
-              max: 999,
+              max: max,
               realtime: false,
               calculable: true,
               textStyle: {
@@ -72,11 +62,10 @@ function carrega(){
               },
               seriesIndex: [0],
               inRange: {
-                  color: ['yellow', '#FFE066', 'red']
+                  color: ['green', '#FFE066', 'red']
               }
               },
              roam: true,
-            
               geo: {
                   name: 'Pontos de crime',
                   type: 'map',
@@ -86,8 +75,7 @@ function carrega(){
                       emphasis: {
                           show: true
                       }
-                  },
-                  
+                  },  
               },
               series: [{
                   type: 'scatter',
@@ -95,6 +83,7 @@ function carrega(){
                   data: data.map(function (itemOpt) {
                   return {
                   name: [itemOpt.tipo, itemOpt.value],
+                  bairro: itemOpt.bairro,
                   value: [
                       itemOpt.longitude,
                       itemOpt.latitude,
@@ -115,7 +104,6 @@ function carrega(){
                               areaColor: 'red'
                           }
                       }
-    
                   };
                   }),
                       legendHoverLink: true,
@@ -123,12 +111,8 @@ function carrega(){
                       geoIndex: 0
                   }]
           };
-          
-      
           pontosdecrime.setOption(option);
-
         }
-        
       });
 }
 

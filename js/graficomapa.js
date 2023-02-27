@@ -1,45 +1,46 @@
-function carregarestado(){
-  atualiza('jan')
+let dados=[];
+   let messelecionado;
+   let selectedData;
+    let myChart1;
+
+    myChart1 = echarts.init(document.getElementById('cpc'));
+    myChart1.showLoading();
+
+    $.get('estatistica/maps/mapsp.json', function (geoJson) {
+      echarts.registerMap('mapsp', geoJson);
+    myChart1.hideLoading();
+    
+    $.ajax({
+      type: "GET",
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      url: 'estatistica/capital.json',
+      error: function () {
+        alert("An error occurred.");
+      },
+      success: function (data) {
+        dados=data;
+      }
+    });
+});
+
+function carregatematico(){
+ 
     var xhttp = new XMLHttpRequest();
  xhttp.onreadystatechange = function() {
    // if (this.readyState == 4 && this.status == 200) {
    //   document.getElementById("demo").innerHTML = '';
    // }
  };
- xhttp.open("GET", "estatistica/estado.php", true);
+ xhttp.open("GET", "estatistica/tematico.php", true);
  xhttp.send();
    }
- 
 
-
-
-
-let dados=[];
-let messelecionado;
-var myChart1 = echarts.init(document.getElementById('cpc'));
-myChart1.showLoading();
-
-$.get('estatistica/maps/mapsp.json', function (geoJson) {
-
- myChart1.hideLoading();
- echarts.registerMap('state', geoJson);
- $.ajax({
-   type: "GET",
-   contentType: 'application/json; charset=utf-8',
-   dataType: 'json',
-   url: 'estatistica/capital.json',
-   error: function () {
-     alert("An error occurred.");
-   },
-   success: function (data) {
-     dados=data;
-   }
- });
-});
-
+   
+   
    function atualiza(s) {
        var selectedMonth = s;
-       var selectedData = dados[selectedMonth];
+       selectedData = dados[selectedMonth];
        messelecionado=selectedData
          myChart1.setOption(option1 = {
            title: {
@@ -90,7 +91,7 @@ $.get('estatistica/maps/mapsp.json', function (geoJson) {
            series: [{
              name: 'Por Bairros',
              type: 'map',
-             mapType: 'state',
+             mapType: 'mapsp',
              itemStyle: {
                normal: {
                  label: {
